@@ -1,0 +1,14 @@
+# Folders
+_tmp/
+.cache/
+.hg/
+
+# Files
+.coverage
+.hg*
+*.pyc
+*~
+*.idea
+*.conf
+*.db
+*.orig

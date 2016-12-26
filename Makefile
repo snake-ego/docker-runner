@@ -1,4 +1,7 @@
+RUN_FILE = dockerstart.py
+
 .DEFAULT_GOAL = create
+
 .PHONY: create
 create: depends build
 
@@ -13,7 +16,7 @@ build:
 		&& pyinstaller \
 	    	--exclude-module pycrypto \
 	    	--exclude-module PyInstaller \
-	    	-F dockerstart.py
+	    	-F $(RUN_FILE)
 
 
 .PHONY: shell

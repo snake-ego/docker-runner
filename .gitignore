@@ -2,6 +2,8 @@
 _tmp/
 .cache/
 .hg/
+build/
+dist/
 
 # Files
 .coverage
@@ -12,3 +14,4 @@ _tmp/
 *.conf
 *.db
 *.orig
+*.spec

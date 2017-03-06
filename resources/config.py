@@ -95,5 +95,4 @@ class ConfigFromJSON(object):
         return self._baseclass(section=section, config=self.config, uppercase=self.uppercase)
 
 
-class ConfigError(Exception):
-    pass
+ConfigError = type('ConfigError', (Exception,), dict())

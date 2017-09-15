@@ -1,17 +1,1 @@
-# Folders
-_tmp/
-.cache/
-.hg/
-build/
-dist/
-
-# Files
-.coverage
-.hg*
-*.pyc
-*~
-*.idea
-*.conf
-*.db
-*.orig
-*.spec
+.vscode/

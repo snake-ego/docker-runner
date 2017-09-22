@@ -58,4 +58,4 @@ clear:
   when: always
   allow_failure: true
   script:
-    - rm -rf ${GOPATH/*
+    - rm -rf ${GOPATH}/*

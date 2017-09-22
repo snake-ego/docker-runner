@@ -1,3 +1,5 @@
+image: $CI_REGISTRY/devops/docker/go-build:latest
+
 variables:
   GIT_STRATEGY: none
 
@@ -8,14 +10,9 @@ stages:
   tags:
     - docker
 
-before_script:
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-
-
 pull:
   <<: *job
   stage: pull
-  image: $CI_REGISTRY/devops/docker/go-build:latest
   script:
     - git clone $CI_REPOSITORY_URL /go/src/dockerstart
     - go install dockerstart

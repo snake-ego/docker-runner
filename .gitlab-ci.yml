@@ -17,6 +17,7 @@ before_script:
 
 cache:
   key: "${CI_PIPELINE_ID}"
+  path:
     - .config
 
 .build: &build

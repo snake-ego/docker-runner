@@ -36,7 +36,11 @@ pull:
   tags:
     - docker
   cache:
+    key: "${CI_PIPELINE_ID}"
     policy: pull
+    paths:
+      - src
+      - .config
     
 build.x64:
   <<: *build

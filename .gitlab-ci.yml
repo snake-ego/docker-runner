@@ -15,11 +15,6 @@ before_script:
   - mkdir .config
   - echo "$REMOTE_CONF" >  .config/rclone.conf
 
-cache:
-  key: "${CI_PIPELINE_ID}"
-  paths:
-    - .config
-
 .build: &build
   stage: build  
   script:

@@ -10,12 +10,6 @@ variables:
   NAME: dockerstart
   REMOTE: remote:artifacts/${NAME}
   GOPATH: $CI_PROJECT_DIR
-
-cache:
-  key: "${CI_PIPELINE_ID}"
-  paths:
-    - src
-    - .config
   
 pull:
   stage: pull
@@ -26,6 +20,11 @@ pull:
     - echo "$REMOTE_CONF" >  .config/rclone.conf
   tags:
     - docker
+  cache:
+    key: "${CI_PIPELINE_ID}"
+    paths:
+      - src
+      - .config
 
 .build: &build
   stage: build
@@ -36,6 +35,8 @@ pull:
     - rclone moveto -uv ${NAME}.${GOARCH} ${REMOTE}/${ARCH}/${NAME} --config .config/rclone.conf
   tags:
     - docker
+  cache:
+    policy: pull
     
 build.x64:
   <<: *build

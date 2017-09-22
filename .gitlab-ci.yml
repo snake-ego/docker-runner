@@ -5,7 +5,8 @@ variables:
   TARGET_BASE: remote:artifacts/dockerstart
 
 before_script:
-  - echo "$REMOTE_CONF" > /etc/rclone.conf
+  - mkdir .config/ .config/rclone
+  - echo "$REMOTE_CONF" > $HOME/.config/rclone/rclone.conf
   
 build:
   stage: build

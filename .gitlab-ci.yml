@@ -14,5 +14,5 @@ pull:
   <<: *job
   stage: pull
   script:
-    - git clone $CI_REPOSITORY_URL /go/src/dockerstart
+    - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL /go/src/dockerstart
     - go install dockerstart

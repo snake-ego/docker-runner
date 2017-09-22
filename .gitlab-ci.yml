@@ -7,13 +7,10 @@ variables:
 before_script:
   - mkdir -p ${HOME}/.config/rclone
   - echo "$REMOTE_CONF" > $HOME/.config/rclone/rclone.conf
+  - echo $(pwd)
   
 build:
   stage: build
-  before_script:
-    - cd /go
-    - echo $(pwd)
-
   script:
     - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL src/dockerstart
     - go build dockerstart

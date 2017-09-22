@@ -11,36 +11,22 @@ variables:
   REMOTE: remote:artifacts/${NAME}
   GOPATH: $CI_PROJECT_DIR
   
-pull:
-  stage: pull
-  script:
-    - '[ -d "src/${NAME}"] && rm -rf src/${NAME}'
-    - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL src/${NAME}
-    - mkdir .config
-    - echo "$REMOTE_CONF" >  .config/rclone.conf
-  tags:
-    - docker
-  cache:
-    key: "${CI_PIPELINE_ID}"
-    paths:
-      - src
-      - .config
+before_script:
+  - mkdir .config
+  - echo "$REMOTE_CONF" >  .config/rclone.conf
+
+cache:
+  key: "${CI_PIPELINE_ID}"
+    - .config
 
 .build: &build
-  stage: build
-  before_script:
-    
+  stage: build  
   script:
+    - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL src/${NAME}
     - go build -o ${NAME}.${GOARCH} ${NAME}
     - rclone moveto -uv ${NAME}.${GOARCH} ${REMOTE}/${ARCH}/${NAME} --config .config/rclone.conf
   tags:
     - docker
-  cache:
-    key: "${CI_PIPELINE_ID}"
-    policy: pull
-    paths:
-      - src
-      - .config
     
 build.x64:
   <<: *build

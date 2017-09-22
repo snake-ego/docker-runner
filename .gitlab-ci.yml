@@ -1,13 +1,12 @@
 image: $CI_REGISTRY/devops/docker/go-build:latest
 
 variables:
-  GIT_STRATEGY: none
   REMOTE: remote:artifacts/dockerstart
+  GOPATH: $CI_PROJECT_DIR
 
 before_script:
   - mkdir -p ${HOME}/.config/rclone
-  - echo "$REMOTE_CONF" > $HOME/.config/rclone/rclone.conf
-  - echo $(pwd)
+  - echo "$REMOTE_CONF" >  ${HOME}/.config/rclone/rclone.conf
   
 build:
   stage: build

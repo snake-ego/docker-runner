@@ -28,6 +28,9 @@ cache:
     - rclone moveto -uv ${NAME}.${GOARCH} ${REMOTE}/${ARCH}/${NAME} --config .config/rclone.conf
   tags:
     - docker
+  cache:
+    key: "${CI_PIPELINE_ID}"
+    policy: pull
     
 build.x64:
   <<: *build

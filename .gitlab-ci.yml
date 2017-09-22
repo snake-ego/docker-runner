@@ -2,17 +2,18 @@ image: $CI_REGISTRY/devops/docker/go-build:latest
 
 variables:
   GIT_STRATEGY: none
+  TARGET_BASE: remote:artifacts/dockerstart
 
-stages:
-  - pull
-
-.job: &job
-  tags:
-    - docker
-
-pull:
-  <<: *job
-  stage: pull
+before_script:
+  - echo "$REMOTE_CONF" > /etc/rclone.conf
+  
+build:
+  stage: build
   script:
     - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL /go/src/dockerstart
-    - go install dockerstart
+    - go build dockerstart
+    - rclone copy /go/bin/dockerstart $TARGET_BASE/x64/
+    - GOARCH=386 go build dockerstart
+    - rclone copy bin/dockerstart $TARGET_BASE/x86/
+  tags:
+    - docker

@@ -5,10 +5,7 @@ variables:
   TARGET_BASE: remote:artifacts/dockerstart
 
 before_script:
-  - mkdir \
-      $HOME
-      $HOME/.config/ \
-      $HOME/.config/rclone
+  - mkdir -p ${HOME}/.config/rclone
   - echo "$REMOTE_CONF" > $HOME/.config/rclone/rclone.conf
   
 build:

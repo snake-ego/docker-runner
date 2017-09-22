@@ -33,7 +33,7 @@ pull:
     
   script:
     - go build -o ${NAME}.${GOARCH} ${NAME}
-    - rclone moveto -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME} --config .config/rclone.conf
+    - rclone moveto -uv ${NAME}.${GOARCH} ${REMOTE}/${ARCH}/${NAME} --config .config/rclone.conf
   tags:
     - docker
     
@@ -41,10 +41,10 @@ build.x64:
   <<: *build
   variables:
     GOARCH: amd64
-  
-
+    ARCH: x64
 
 build.x86:
   <<: *build
   variables:
     GOARCH: "386"
+    ARCH: x86

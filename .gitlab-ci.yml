@@ -26,6 +26,9 @@ before_script:
   cache:
     key: "${CI_PIPELINE_ID}"
     policy: pull
+  only: 
+    - master
+
     
 build.x64:
   <<: *build

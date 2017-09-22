@@ -11,14 +11,8 @@ variables:
   REMOTE: remote:artifacts/${NAME}
   GOPATH: $CI_PROJECT_DIR
 
-
-before_script:
-  - mkdir -p ${HOME}/.config/rclone
-  - echo "$REMOTE_CONF" >  ${HOME}/.config/rclone/rclone.conf
-
 cache:
   paths:
-    - ${HOME}/.config/rclone
     - ${GOPATH}
   
 pull:
@@ -32,8 +26,12 @@ build.x64:
   stage: build
   variables:
     GOARCH: amd64
+  before_script:
+    - mkdir -p ${HOME}/.config/rclone
+    - echo "$REMOTE_CONF" >  ${HOME}/.config/rclone/rclone.conf
+
   script:
-    - go build ${NAME}.${GOARCH}
+    - go build -o ${NAME}.${GOARCH} ${NAME}
     - rclone move -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME}
   tags:
     - docker
@@ -43,8 +41,13 @@ build.x86:
   stage: build
   variables:
     GOARCH: amd64
+  
+  before_script:
+    - mkdir -p ${HOME}/.config/rclone
+    - echo "$REMOTE_CONF" >  ${HOME}/.config/rclone/rclone.conf
+
   script:
-    - go build ${NAME}.${GOARCH}
+    - go build -o ${NAME}.${GOARCH} ${NAME}
     - rclone move -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME}
   tags:
     - docker

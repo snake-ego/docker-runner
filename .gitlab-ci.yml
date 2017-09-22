@@ -11,10 +11,6 @@ variables:
   NAME: dockerstart
   REMOTE: remote:artifacts/${NAME}
   GOPATH: $CI_PROJECT_DIR
-
-cache:
-  paths:
-    - ${GOPATH}
   
 pull:
   stage: pull
@@ -22,6 +18,9 @@ pull:
     - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL src/${NAME}
   tags:
     - docker
+  cache:
+    paths:
+      - ${GOPATH}
 
 build.x64:
   stage: build

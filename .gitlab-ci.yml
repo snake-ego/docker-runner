@@ -3,6 +3,7 @@ image: $CI_REGISTRY/devops/docker/go-build:latest
 stages:
   - pull
   - build
+  - clear
 
 variables:
   GIT_STRATEGY: none
@@ -51,3 +52,10 @@ build.x86:
     - rclone move -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME}
   tags:
     - docker
+
+clear:
+  stage: clear
+  when: always
+  allow_failure: true
+  script:
+    - rm -rf ${GOPATH/*

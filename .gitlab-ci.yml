@@ -20,7 +20,7 @@ cache:
 pull:
   stage: pull
   script:
-    - [ -d "src/${NAME}"] && rm -rf src/${NAME}
+    - "[ -d "src/${NAME}"] && rm -rf src/${NAME}"
     - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL src/${NAME}
     - mkdir .config
     - echo "$REMOTE_CONF" >  .config/rclone.conf

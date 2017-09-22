@@ -6,6 +6,7 @@ variables:
 
 before_script:
   - mkdir \
+      $HOME
       $HOME/.config/ \
       $HOME/.config/rclone
   - echo "$REMOTE_CONF" > $HOME/.config/rclone/rclone.conf

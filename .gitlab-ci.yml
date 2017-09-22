@@ -1,5 +1,4 @@
 image: $CI_REGISTRY/devops/docker/go-build:latest
-
 stages:
   - pull
   - build
@@ -15,41 +14,37 @@ variables:
 cache:
   key: "${CI_PIPELINE_ID}"
   paths:
-    - ${GOPATH}
+    - src
+    - .config
   
 pull:
   stage: pull
   script:
+    - if [ -d "src/${NAME}"]; rm -rf src/${NAME}; fi
     - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL src/${NAME}
+    - mkdir .config
+    - echo "$REMOTE_CONF" >  .config/rclone.conf
   tags:
     - docker
 
-build.x64:
+.build: &build
   stage: build
-  variables:
-    GOARCH: amd64
   before_script:
-    - mkdir -p ${HOME}/.config/rclone
-    - echo "$REMOTE_CONF" >  ${HOME}/.config/rclone/rclone.conf
-
+    
   script:
     - go build -o ${NAME}.${GOARCH} ${NAME}
-    - rclone move -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME}
+    - rclone moveto -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME} --config .config/rclone.conf
   tags:
     - docker
-
-
-build.x86:
-  stage: build
+    
+build.x64:
+  <<: *build
   variables:
     GOARCH: amd64
   
-  before_script:
-    - mkdir -p ${HOME}/.config/rclone
-    - echo "$REMOTE_CONF" >  ${HOME}/.config/rclone/rclone.conf
 
-  script:
-    - go build -o ${NAME}.${GOARCH} ${NAME}
-    - rclone move -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME}
-  tags:
-    - docker
+
+build.x86:
+  <<: *build
+  variables:
+    GOARCH: "386"

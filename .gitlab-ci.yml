@@ -1,0 +1,40 @@
+image: $CI_REGISTRY/devops/docker/go-build:latest
+stages:
+  - pull
+  - build
+  - clear
+
+variables:
+  GIT_STRATEGY: none
+  
+  NAME: dockerstart
+  REMOTE: remote:artifacts/${NAME}
+  GOPATH: $CI_PROJECT_DIR
+  
+before_script:
+  - mkdir .config
+  - echo "$REMOTE_CONF" >  .config/rclone.conf
+
+.build: &build
+  stage: build  
+  script:
+    - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL src/${NAME}
+    - go build -o ${NAME}.${GOARCH} ${NAME}
+    - rclone moveto -uv ${NAME}.${GOARCH} ${REMOTE}/${ARCH}/${NAME} --config .config/rclone.conf
+  tags:
+    - docker
+  cache:
+    key: "${CI_PIPELINE_ID}"
+    policy: pull
+    
+build.x64:
+  <<: *build
+  variables:
+    GOARCH: amd64
+    ARCH: x64
+
+build.x86:
+  <<: *build
+  variables:
+    GOARCH: "386"
+    ARCH: x86

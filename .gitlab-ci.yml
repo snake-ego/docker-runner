@@ -20,6 +20,8 @@ pull:
   stage: pull
   script:
     - git clone -b $CI_COMMIT_REF_NAME $CI_REPOSITORY_URL src/${NAME}
+  tags:
+    - docker
 
 build.x64:
   stage: build
@@ -28,6 +30,8 @@ build.x64:
   script:
     - go build ${NAME}.${GOARCH}
     - rclone move -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME}
+  tags:
+    - docker
 
 
 build.x86:
@@ -37,3 +41,5 @@ build.x86:
   script:
     - go build ${NAME}.${GOARCH}
     - rclone move -uv ${NAME}.${GOARCH} ${REMOTE}/x64/${NAME}
+  tags:
+    - docker
